@@ -606,7 +606,7 @@ Copilot auto-discovers the tools and makes them available in **Agent mode**.
 
 Custom agents are **specialized AI participants** you can invoke in Copilot Chat.
 
-- Defined via `agents.json` or VS Code extensions
+- Defined as **Markdown files** in `.github/agents/`
 - Each agent has its own **instructions, tools, and model configuration**
 - Invoked with `@agent-name` in Chat
 - Think of them as **expert coworkers** — each focused on a specific domain
@@ -655,8 +655,8 @@ Custom agents let you **encode team knowledge** into reusable AI personas.
 
 ### 🧪 Demo: Custom Agents
 
-> 1. Walk through an `agents.json` configuration
-> 2. Invoke `@agent-name` in Copilot Chat
+> 1. Create a `.github/agents/api-expert.md` file
+> 2. Invoke `@api-expert` in Copilot Chat
 > 3. Show how the agent uses its specialized instructions
 > 4. Demonstrate tool access scoped to the agent
 > 5. Compare output to unscoped Copilot Chat
@@ -756,5 +756,5 @@ From **zero** (your first Tab-complete) to **agents** (autonomous coding).
 | Scoped Instructions | Repo | `.instructions.md` + `applyTo` |
 | Reusable Prompts | Repo | `.prompt.md` files |
 | MCP | VS Code | `.vscode/mcp.json` |
-| Custom Agents | Repo | `agents.json` |
+| Custom Agents | Repo | `.github/agents/*.md` |
 | Coding Agent | GitHub.com | Assign issue to Copilot |
