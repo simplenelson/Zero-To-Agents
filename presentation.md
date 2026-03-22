@@ -7,6 +7,7 @@ color: #e6edf3
 style: |
   section {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 28px;
   }
   h1 {
     color: #58a6ff;
@@ -131,13 +132,12 @@ Your Code & Context  ──►  GitHub Copilot  ──►  Suggestions, Answers,
 | | **Business** | **Enterprise** |
 |---|---|---|
 | **Price** | $19 / user / month | $39 / user / month |
-| **Premium Requests** | 300 PRU / user / month | 1000 PRU / user / month |
+| **Premium Requests** | 300 PRU / user / month | 1,000 PRU / user / month |
 | **Admin & Policy** | ✅ Org-level controls, audit logs | ✅ Everything in Business |
 | **Knowledge Bases** | — | ✅ Bing search, doc indexing |
-| **Fine-Tuning** | — | ✅ Custom model fine-tuning |
 | **Security** | IP indemnity, content exclusions | Advanced security, SAML SSO |
 
-> **PRU** = Premium Request Unit — used for premium models, Agent mode, and Coding Agent tasks
+> **PRU** = Premium Request Unit — consumed by premium models, Agent mode, and Coding Agent
 
 ---
 
@@ -257,14 +257,20 @@ A **conversational AI assistant** embedded in VS Code.
 - Ask anything: *"How do I connect to a database in this project?"*
 - Copilot has access to your workspace context
 
-### Context References
+---
+
+## Chat — Context References
+
+Give Copilot the right context with **`#` references**:
 
 | Reference | What it provides |
-|-----------|-----------------|
+|-----------|------------------|
 | `#file` | Contents of a specific file |
 | `#selection` | Currently selected code |
 | `#codebase` | Workspace-wide semantic search |
 | `#terminalLastCommand` | Output of the last terminal command |
+
+Combine them: *"Using `#file:schema.prisma`, generate types for `#selection`"*
 
 ---
 
@@ -452,22 +458,13 @@ applyTo: "src/components/**"
 - Export components as named exports
 ```
 
-```markdown
----
-applyTo: "**/*.sql"
----
-
-- Use parameterized queries — never interpolate user input
-- All tables must have `created_at` and `updated_at` columns
-```
+You can have **multiple** `.instructions.md` files scoped to different parts of your codebase.
 
 ---
 
 ## Reusable Prompts
 
-### `.prompt.md` files
-
-**Shareable, version-controlled prompt templates** that your whole team can use.
+### `.prompt.md` files — shareable, version-controlled prompt templates
 
 ```markdown
 <!-- .github/prompts/new-api-endpoint.prompt.md -->
@@ -475,16 +472,13 @@ applyTo: "**/*.sql"
 Create a new REST API endpoint with the following:
 - Route handler in `src/routes/`
 - Input validation with Zod
-- Service layer function in `src/services/`
 - Unit tests with Vitest
 - Error handling following our middleware pattern
-
-Endpoint: {{ endpoint_description }}
 ```
 
-- Invoke from Chat: type `/` and select the prompt
+- Invoke from Chat — type `/` and select the prompt
 - Standardizes how the team interacts with Copilot
-- Great for onboarding, consistency, and repeatable workflows
+- Great for onboarding and repeatable workflows
 
 ---
 
@@ -508,23 +502,17 @@ Endpoint: {{ endpoint_description }}
 
 ## What Is MCP?
 
-**Model Context Protocol** — an open standard for connecting AI models to external tools and data sources.
+**Model Context Protocol** — an open standard for connecting AI models to external tools and data.
 
 ```
-  Copilot (Agent Mode)
-       │
-       ▼
-   MCP Client
-       │
-       ▼
-  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐
-  │  Database    │  │  REST API   │  │   Docs /     │
-  │  Server      │  │  Server     │  │   Search     │
-  └─────────────┘  └─────────────┘  └─────────────┘
+  Copilot (Agent Mode)  ──►  MCP Client  ──►  MCP Servers
+                                               ├── Database
+                                               ├── REST API
+                                               └── Docs / Search
 ```
 
 - **MCP Servers** expose tools, resources, and prompts
-- **Copilot** is an MCP client — it discovers and calls these tools
+- **Copilot** is an MCP client — discovers and calls these tools
 - Think of it as **USB-C for AI** — a universal connector
 
 ---
@@ -552,14 +540,6 @@ Add a `.vscode/mcp.json` to your project:
 ```json
 {
   "servers": {
-    "my-db": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-postgres"],
-      "env": {
-        "DATABASE_URL": "postgresql://localhost:5432/mydb"
-      }
-    },
     "fetch": {
       "type": "stdio",
       "command": "npx",
@@ -615,27 +595,24 @@ Custom agents are **specialized AI participants** you can invoke in Copilot Chat
 
 ## Anatomy of a Custom Agent
 
-### `.github/agents/api-expert.json`
+### `.github/agents/api-expert.md`
 
-```json
-{
-  "name": "api-expert",
-  "description": "Expert on our REST API conventions and patterns",
-  "instructions": "You are an API expert for our Node.js backend...",
-  "tools": [
-    "mcp:my-db",
-    "mcp:fetch"
-  ],
-  "model": "gpt-4o"
-}
+```markdown
+---
+description: Expert on our REST API conventions
+tools:
+  - mcp: fetch
+---
+
+You are an API expert for our Node.js backend.
+- Follow RESTful conventions
+- Use Zod for input validation
+- Always include error handling middleware
 ```
 
-| Property | Purpose |
-|----------|---------|
-| `name` | How you invoke it: `@api-expert` |
-| `instructions` | System prompt — defines personality & expertise |
-| `tools` | Which MCP tools it can use |
-| `model` | Which LLM backs the agent |
+- **Filename** → agent name: `@api-expert`
+- **YAML front matter** → description & tools
+- **Markdown body** → system prompt (personality & expertise)
 
 ---
 
@@ -675,21 +652,18 @@ Custom agents let you **encode team knowledge** into reusable AI personas.
 ## The Journey
 
 ```
-  Autocomplete     Chat       Slash Cmds     Modes       Instructions
-     ┌──┐         ┌──┐         ┌──┐         ┌──┐           ┌──┐
-     │  │    ►    │  │    ►    │  │    ►    │  │     ►     │  │
-     └──┘         └──┘         └──┘         └──┘           └──┘
-  Ghost text    Q&A in IDE   /fix /tests   Ask/Edit/     Team rules
-                                            Agent         & prompts
-
-     MCP        Custom        Coding
-    Servers      Agents        Agent
-     ┌──┐         ┌──┐         ┌──┐
-►    │  │    ►    │  │    ►    │  │
-     └──┘         └──┘         └──┘
-  External      Specialized   Issues ──►
-  tools & data  AI personas   Pull Requests
+Autocomplete ► Chat ► Slash Cmds ► Modes ► Instructions ► MCP ► Agents
 ```
+
+| Stage | What you unlock |
+|-------|----------------|
+| **Autocomplete** | Ghost text — Tab to accept |
+| **Chat** | Q&A in your IDE |
+| **Slash Commands** | `/fix`, `/tests`, `/doc` |
+| **Modes** | Ask → Edit → Agent |
+| **Instructions & Prompts** | Team conventions & reusable workflows |
+| **MCP** | External tools & data |
+| **Custom & Coding Agents** | Specialized AI personas, issue → PR |
 
 From **zero** (your first Tab-complete) to **agents** (autonomous coding).
 
