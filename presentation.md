@@ -2,43 +2,60 @@
 marp: true
 theme: default
 paginate: true
-backgroundColor: #ffffff
-color: #24292f
+backgroundColor: #0d1117
+color: #e6edf3
 style: |
   section {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
   }
   h1 {
-    color: #0969da;
+    color: #58a6ff;
   }
   h2 {
-    color: #0969da;
+    color: #58a6ff;
   }
   h3 {
-    color: #1a7f37;
+    color: #3fb950;
   }
   blockquote {
-    border-left: 4px solid #0969da;
+    border-left: 4px solid #3fb950;
     padding: 0.5em 1em;
-    background: #ddf4ff;
-    color: #24292f;
+    background: #161b22;
+    color: #e6edf3;
   }
   code {
-    background: #f6f8fa;
+    background: #161b22;
+    color: #79c0ff;
     padding: 2px 6px;
     border-radius: 4px;
+  }
+  pre {
+    background: #161b22 !important;
   }
   table {
     font-size: 0.85em;
   }
+  table th {
+    background: #161b22;
+    color: #58a6ff;
+  }
+  table td {
+    background: #0d1117;
+  }
+  a {
+    color: #58a6ff;
+  }
+  strong {
+    color: #e6edf3;
+  }
   footer {
-    color: #656d76;
+    color: #484f58;
   }
 ---
 
 <!-- _paginate: false -->
-<!-- _backgroundColor: #0969da -->
-<!-- _color: #ffffff -->
+<!-- _backgroundColor: #161b22 -->
+<!-- _color: #e6edf3 -->
 
 # Zero To Agents
 
@@ -63,8 +80,8 @@ style: |
 
 ---
 
-<!-- _backgroundColor: #0969da -->
-<!-- _color: #ffffff -->
+<!-- _backgroundColor: #161b22 -->
+<!-- _color: #e6edf3 -->
 
 # Module 1
 ## Introduction to GitHub Copilot
@@ -118,8 +135,8 @@ Your Code & Context  ──►  GitHub Copilot  ──►  Suggestions, Answers,
 
 ---
 
-<!-- _backgroundColor: #0969da -->
-<!-- _color: #ffffff -->
+<!-- _backgroundColor: #161b22 -->
+<!-- _color: #e6edf3 -->
 
 # Module 2
 ## GitHub Copilot on GitHub.com
@@ -194,8 +211,8 @@ The **Coding Agent** turns issues into pull requests — autonomously.
 
 ---
 
-<!-- _backgroundColor: #0969da -->
-<!-- _color: #ffffff -->
+<!-- _backgroundColor: #161b22 -->
+<!-- _color: #e6edf3 -->
 
 # Module 3
 ## GitHub Copilot in VS Code — Foundations
@@ -272,8 +289,8 @@ Slash commands provide **structured intent** so Copilot knows exactly what you n
 
 ---
 
-<!-- _backgroundColor: #0969da -->
-<!-- _color: #ffffff -->
+<!-- _backgroundColor: #161b22 -->
+<!-- _color: #e6edf3 -->
 
 # Module 4
 ## Modes of Interaction
@@ -361,8 +378,8 @@ Maximum productivity — Copilot drives, you supervise.
 
 ---
 
-<!-- _backgroundColor: #0969da -->
-<!-- _color: #ffffff -->
+<!-- _backgroundColor: #161b22 -->
+<!-- _color: #e6edf3 -->
 
 # Module 5
 ## Instruction Files & Reusable Prompts
@@ -474,8 +491,8 @@ Endpoint: {{ endpoint_description }}
 
 ---
 
-<!-- _backgroundColor: #0969da -->
-<!-- _color: #ffffff -->
+<!-- _backgroundColor: #161b22 -->
+<!-- _color: #e6edf3 -->
 
 # Module 6
 ## MCP — Model Context Protocol
@@ -570,8 +587,8 @@ Copilot auto-discovers the tools and makes them available in **Agent mode**.
 
 ---
 
-<!-- _backgroundColor: #0969da -->
-<!-- _color: #ffffff -->
+<!-- _backgroundColor: #161b22 -->
+<!-- _color: #e6edf3 -->
 
 # Module 7
 ## Custom Agents
@@ -640,8 +657,8 @@ Custom agents let you **encode team knowledge** into reusable AI personas.
 
 ---
 
-<!-- _backgroundColor: #0969da -->
-<!-- _color: #ffffff -->
+<!-- _backgroundColor: #161b22 -->
+<!-- _color: #e6edf3 -->
 
 # Module 8
 ## Putting It All Together — Zero to Agent
@@ -705,8 +722,8 @@ From **zero** (your first Tab-complete) to **agents** (autonomous coding).
 
 ---
 
-<!-- _backgroundColor: #0969da -->
-<!-- _color: #ffffff -->
+<!-- _backgroundColor: #161b22 -->
+<!-- _color: #e6edf3 -->
 
 # Thank You!
 
@@ -717,7 +734,7 @@ From **zero** (your first Tab-complete) to **agents** (autonomous coding).
 ---
 
 <!-- _paginate: false -->
-<!-- _backgroundColor: #f6f8fa -->
+<!-- _backgroundColor: #0d1117 -->
 
 ## Appendix: Quick Reference
 
