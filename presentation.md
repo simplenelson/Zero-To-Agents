@@ -115,15 +115,10 @@ Your Code & Context  ──►  GitHub Copilot  ──►  Suggestions, Answers,
 
 ## Where Does It Run?
 
-- **VS Code**
-- **Visual Studio**
-- **JetBrains IDEs** (IntelliJ, PyCharm, WebStorm, etc.)
-- **Xcode**
-- **Eclipse**
-- **GitHub.com**
-- **CLI** — `gh copilot`
-- **Windows Terminal**
-- **GitHub Mobile**
+- **IDEs** — VS Code, Visual Studio, JetBrains, Xcode, Eclipse
+- **GitHub.com** — Chat, PRs, Coding Agent
+- **Terminal** — `gh copilot` in any terminal
+- **Mobile** — GitHub Mobile app
 
 ---
 
@@ -133,9 +128,6 @@ Your Code & Context  ──►  GitHub Copilot  ──►  Suggestions, Answers,
 |---|---|---|
 | **Price** | $19 / user / month | $39 / user / month |
 | **Premium Requests** | 300 PRU / user / month | 1,000 PRU / user / month |
-| **Admin & Policy** | ✅ Org-level controls, audit logs | ✅ Everything in Business |
-| **Knowledge Bases** | — | ✅ Bing search, doc indexing |
-| **Security** | IP indemnity, content exclusions | Advanced security, SAML SSO |
 
 > **PRU** = Premium Request Unit — consumed by premium models, Agent mode, and Coding Agent
 
@@ -317,7 +309,7 @@ GitHub Copilot Chat in VS Code operates in **three distinct modes**:
 | Mode | What it does | Modifies files? |
 |------|-------------|----------------|
 | **Ask** | Read-only Q&A | ❌ No |
-| **Edit** | Targeted file edits | ✅ Yes (with diff preview) |
+| **Plan** | Generates a step-by-step plan | ❌ No (plan only) |
 | **Agent** | Autonomous multi-step execution | ✅ Yes (+ terminal, tools) |
 
 Switch modes using the **dropdown** at the top of the Chat panel.
@@ -337,17 +329,17 @@ Safe to use anytime — nothing changes.
 
 ---
 
-## Edit Mode
+## Plan Mode
 
-**Targeted edits** — Copilot proposes changes to specific files.
+**Step-by-step planning** — Copilot outlines an approach without modifying files.
 
-- Best for: focused refactors, bug fixes, adding features to known files
-- Shows a **diff preview** before applying
-- You choose which changes to accept or reject
-- *"Add input validation to the signup form"*
-- *"Refactor this function to use async/await"*
+- Best for: breaking down complex tasks, thinking through architecture
+- Generates a structured plan you can review before executing
+- Hand off the plan to Agent mode to implement it
+- *"Plan how to add authentication to this Express app"*
+- *"Plan a refactor of the data layer to use the repository pattern"*
 
-You stay in control — review every change.
+Think first, act later — plan before you build.
 
 ---
 
@@ -368,15 +360,15 @@ Maximum productivity — Copilot drives, you supervise.
 ### The Progression
 
 ```
-  Ask Mode          Edit Mode          Agent Mode
+  Ask Mode          Plan Mode          Agent Mode
   ─────────────────────────────────────────────────►
   
-  "Explain this"    "Fix this file"    "Build this feature"
-  Read-only         Surgical edits     Multi-step autonomy
-  Safe exploration  Controlled change  Full AI agency
+  "Explain this"    "Plan this"        "Build this feature"
+  Read-only         Structured plan    Multi-step autonomy
+  Safe exploration  Think before act   Full AI agency
 ```
 
-**Start with Ask → Graduate to Edit → Unlock Agent** as your confidence grows.
+**Start with Ask → Plan your approach → Unleash Agent** as your confidence grows.
 
 ---
 
@@ -385,8 +377,8 @@ Maximum productivity — Copilot drives, you supervise.
 > **The same task, three ways:**
 >
 > 1. **Ask Mode** — *"How would I add error handling to this API endpoint?"*
-> 2. **Edit Mode** — *"Add try/catch error handling to this endpoint"*
-> 3. **Agent Mode** — *"Add error handling to all API endpoints, create an error middleware, and add tests"*
+> 2. **Plan Mode** — *"Plan how to add error handling across all API endpoints"*
+> 3. **Agent Mode** — *"Add error handling to all API endpoints, create an error middleware, and add tests"**
 
 ---
 
@@ -724,7 +716,7 @@ From **zero** (your first Tab-complete) to **agents** (autonomous coding).
 | Chat | VS Code / GitHub.com | `Ctrl+Shift+I` |
 | Slash Commands | VS Code Chat | `/explain`, `/fix`, `/tests`, `/doc` |
 | Ask Mode | VS Code Chat | Dropdown → Ask |
-| Edit Mode | VS Code Chat | Dropdown → Edit |
+| Plan Mode | VS Code Chat | Dropdown → Plan |
 | Agent Mode | VS Code Chat | Dropdown → Agent |
 | Instructions | Repo | `.github/copilot-instructions.md` |
 | Scoped Instructions | Repo | `.instructions.md` + `applyTo` |
