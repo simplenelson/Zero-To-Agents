@@ -4,8 +4,8 @@
 
 A hands-on enablement session that takes you from your first autocomplete suggestion to orchestrating autonomous AI agents — all with GitHub Copilot.
 
-> **📽️ [View the Slide Deck →](presentation.md)**
-> The presentation is built with [Marp](https://marp.app) — it renders as readable Markdown on GitHub and can be exported to HTML/PDF/PPTX for delivery.
+> **📽️ [View the Slide Deck →](https://simplenelson.github.io/Zero-To-Agents/)**
+> The presentation is auto-built with [Marp](https://marp.app) and published to GitHub Pages on every push. You can also [view the source Markdown](presentation.md).
 
 ---
 
