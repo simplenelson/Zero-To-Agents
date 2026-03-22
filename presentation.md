@@ -114,24 +114,30 @@ Your Code & Context  ──►  GitHub Copilot  ──►  Suggestions, Answers,
 
 ## Where Does It Run?
 
-| Platform | Capabilities |
-|----------|-------------|
-| **VS Code** | Autocomplete, Chat, Edit, Agent mode, MCP, Custom Agents |
-| **Visual Studio** | Autocomplete, Chat, Edits |
-| **JetBrains IDEs** | Autocomplete, Chat |
-| **GitHub.com** | Chat, PR summaries, Code review, Coding Agent |
-| **CLI** | `gh copilot` for terminal assistance |
+- **VS Code**
+- **Visual Studio**
+- **JetBrains IDEs** (IntelliJ, PyCharm, WebStorm, etc.)
+- **Xcode**
+- **Eclipse**
+- **GitHub.com**
+- **CLI** — `gh copilot`
+- **Windows Terminal**
+- **GitHub Mobile**
 
 ---
 
-## Plans & Licensing
+## Plans & Pricing
 
-| Plan | Target | Key Highlights |
-|------|--------|---------------|
-| **Free** | Everyone | Limited completions & chat |
-| **Pro** | Individuals | Unlimited completions, Chat, Agent mode |
-| **Business** | Organizations | Admin controls, policy management, audit logs |
-| **Enterprise** | Large orgs | Knowledge bases, fine-tuning, advanced security |
+| | **Business** | **Enterprise** |
+|---|---|---|
+| **Price** | $19 / user / month | $39 / user / month |
+| **Premium Requests** | 300 PRU / user / month | 1000 PRU / user / month |
+| **Admin & Policy** | ✅ Org-level controls, audit logs | ✅ Everything in Business |
+| **Knowledge Bases** | — | ✅ Bing search, doc indexing |
+| **Fine-Tuning** | — | ✅ Custom model fine-tuning |
+| **Security** | IP indemnity, content exclusions | Advanced security, SAML SSO |
+
+> **PRU** = Premium Request Unit — used for premium models, Agent mode, and Coding Agent tasks
 
 ---
 
