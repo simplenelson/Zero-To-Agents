@@ -1,11 +1,48 @@
 import Link from "next/link";
-import { getAllNotes } from "@/lib/notes";
+import { getAllNotes, getNotesByCategory } from "@/lib/notes";
 import { NoteCard } from "@/components/NoteCard";
 import { CATEGORIES } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
-export default function NotesPage() {
+interface NotesPageProps {
+  searchParams: Promise<{ category?: string }>;
+}
+
+export default async function NotesPage({ searchParams }: NotesPageProps) {
+  const { category } = await searchParams;
+  const validCategory = CATEGORIES.includes(category as (typeof CATEGORIES)[number])
+    ? category
+    : undefined;
+
+  if (validCategory) {
+    const notes = getNotesByCategory(validCategory);
+
+    return (
+      <div>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold">{validCategory}</h1>
+          <Link
+            href="/notes/new"
+            className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm"
+          >
+            + New Note
+          </Link>
+        </div>
+
+        {notes.length === 0 ? (
+          <p className="text-gray-400">No notes in this category yet.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {notes.map((note) => (
+              <NoteCard key={note.id} note={note} />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
   const notes = getAllNotes();
 
   return (
@@ -20,14 +57,14 @@ export default function NotesPage() {
         </Link>
       </div>
 
-      {CATEGORIES.map((category) => {
-        const categoryNotes = notes.filter((n) => n.category === category);
+      {CATEGORIES.map((cat) => {
+        const categoryNotes = notes.filter((n) => n.category === cat);
         if (categoryNotes.length === 0) return null;
 
         return (
-          <div key={category} className="mb-8">
+          <div key={cat} className="mb-8">
             <h2 className="text-lg font-semibold text-gray-300 mb-3">
-              {category}
+              {cat}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {categoryNotes.map((note) => (
