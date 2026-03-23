@@ -1,17 +1,33 @@
 import Link from "next/link";
-import { getAllNotes } from "@/lib/notes";
+import { getAllNotes, getNotesByCategory } from "@/lib/notes";
 import { NoteCard } from "@/components/NoteCard";
 import { CATEGORIES } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
-export default function NotesPage() {
-  const notes = getAllNotes();
+interface NotesPageProps {
+  searchParams: Promise<{
+    category?: string | string[];
+  }>;
+}
+
+export default async function NotesPage({ searchParams }: NotesPageProps) {
+  const { category } = await searchParams;
+  const categoryParam = Array.isArray(category) ? category[0] : category;
+  const selectedCategory = CATEGORIES.find(
+    (currentCategory) => currentCategory === categoryParam
+  );
+  const notes = selectedCategory
+    ? getNotesByCategory(selectedCategory)
+    : getAllNotes();
+  const visibleCategories = selectedCategory ? [selectedCategory] : CATEGORIES;
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">All Notes</h1>
+        <h1 className="text-2xl font-bold">
+          {selectedCategory ?? "All Notes"}
+        </h1>
         <Link
           href="/notes/new"
           className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm"
@@ -20,7 +36,7 @@ export default function NotesPage() {
         </Link>
       </div>
 
-      {CATEGORIES.map((category) => {
+      {visibleCategories.map((category) => {
         const categoryNotes = notes.filter((n) => n.category === category);
         if (categoryNotes.length === 0) return null;
 
