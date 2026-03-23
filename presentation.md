@@ -580,7 +580,7 @@ Custom agents are **specialized AI participants** you can invoke in Copilot Chat
 
 - Defined as **Markdown files** in `.github/agents/`
 - Each agent has its own **instructions, tools, and model configuration**
-- Invoked with `@agent-name` in Chat
+- Invoked via the **mode dropdown** at the top of Chat
 - Think of them as **expert coworkers** — each focused on a specific domain
 
 ---
@@ -602,7 +602,7 @@ You are an API expert for our Node.js backend.
 - Always include error handling middleware
 ```
 
-- **Filename** → agent name: `@api-expert`
+- **Filename** → agent name shown in dropdown: `api-expert`
 - **YAML front matter** → description & tools
 - **Markdown body** → system prompt (personality & expertise)
 
@@ -612,11 +612,11 @@ You are an API expert for our Node.js backend.
 
 | Agent | What it does |
 |-------|-------------|
-| `@api-expert` | Helps design & implement API endpoints following team patterns |
-| `@db-admin` | Writes migrations, optimizes queries, explains schemas |
-| `@reviewer` | Reviews code against team standards, suggests improvements |
-| `@onboarding` | Helps new team members understand the codebase |
-| `@deployer` | Guides through deployment steps, checks environment configs |
+| `api-expert` | Helps design & implement API endpoints following team patterns |
+| `db-admin` | Writes migrations, optimizes queries, explains schemas |
+| `reviewer` | Reviews code against team standards, suggests improvements |
+| `onboarding` | Helps new team members understand the codebase |
+| `deployer` | Guides through deployment steps, checks environment configs |
 
 Custom agents let you **encode team knowledge** into reusable AI personas.
 
@@ -625,7 +625,7 @@ Custom agents let you **encode team knowledge** into reusable AI personas.
 ### 🧪 Demo: Custom Agents
 
 > 1. Create a `.github/agents/api-expert.md` file
-> 2. Invoke `@api-expert` in Copilot Chat
+> 2. Select **api-expert** from the Chat mode dropdown
 > 3. Show how the agent uses its specialized instructions
 > 4. Demonstrate tool access scoped to the agent
 > 5. Compare output to unscoped Copilot Chat
@@ -722,5 +722,5 @@ From **zero** (your first Tab-complete) to **agents** (autonomous coding).
 | Scoped Instructions | Repo | `.instructions.md` + `applyTo` |
 | Reusable Prompts | Repo | `.prompt.md` files |
 | MCP | VS Code | `.vscode/mcp.json` |
-| Custom Agents | Repo | `.github/agents/*.md` |
+| Custom Agents | Repo | `.github/agents/*.md` — select from Chat dropdown |
 | Coding Agent | GitHub.com | Assign issue to Copilot |
