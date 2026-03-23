@@ -1,12 +1,7 @@
 ---
-description: "Debug your application to find and fix a bug"
-name: "Debug"
-tools:
-  - editFiles
-  - search
-  - runInTerminal
-  - terminalLastCommand
-  - problems
+description: 'Debug your application to find and fix a bug'
+name: 'Debug'
+tools: ['edit', 'search', 'execute']
 ---
 
 # Debug Mode

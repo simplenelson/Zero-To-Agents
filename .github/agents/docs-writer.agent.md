@@ -1,10 +1,7 @@
 ---
-description: "Write and improve documentation notes for the knowledge base"
-name: "Docs Writer"
-tools:
-  - editFiles
-  - search
-  - fetch
+description: 'Write and improve documentation notes for the knowledge base'
+name: 'Docs Writer'
+tools: ['edit', 'search', 'web']
 ---
 
 # Docs Writer
