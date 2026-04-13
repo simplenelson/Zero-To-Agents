@@ -32,6 +32,7 @@ jobs:
         run: |
           mkdir -p dist
           marp presentation.md --html --output dist/index.html
+          cp enablement-session.html dist/enablement-session.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

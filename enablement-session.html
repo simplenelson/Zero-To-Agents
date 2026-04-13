@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Assisted Software Development — DAP Enablement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/theme/black.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css">
+<style>
+  :root {
+    --veeam-green: #00b336;
+    --veeam-green-dim: #009929;
+    --accent-blue: #58a6ff;
+    --accent-yellow: #f0b429;
+    --accent-red: #ff6b6b;
+    --bg-card: rgba(255,255,255,0.05);
+    --bg-card-hover: rgba(255,255,255,0.08);
+    --border-subtle: rgba(255,255,255,0.12);
+  }
+
+  .reveal { font-family: 'Inter', sans-serif; font-size: 38px; }
+  .reveal h1, .reveal h2, .reveal h3 { font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  .reveal h2 { color: #fff; font-size: 1.3em; }
+  .reveal h3 { color: var(--veeam-green); font-size: 1.1em; text-transform: uppercase; letter-spacing: 0.08em; }
+  .reveal code, .reveal pre { font-family: 'JetBrains Mono', monospace; }
+  .reveal pre { font-size: 0.40em; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); border: 1px solid var(--border-subtle); }
+  .reveal .slides section { text-align: left; overflow: hidden; }
+  .reveal .slides section.center-slide { text-align: center; }
+
+  /* Title slide */
+  .title-slide { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; height: 100%; }
+  .title-slide .eyebrow { color: var(--veeam-green); font-size: 0.75em; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.5em; }
+  .title-slide h1 { font-size: 2.4em; line-height: 1.15; margin: 0 0 0.4em; }
+  .title-slide h1 span { color: var(--veeam-green); }
+  .title-slide .subtitle { color: rgba(255,255,255,0.6); font-size: 0.85em; font-weight: 300; }
+  .title-slide .meta { margin-top: 2em; display: flex; gap: 2em; }
+  .title-slide .meta-item { font-size: 0.65em; color: rgba(255,255,255,0.5); }
+  .title-slide .meta-item strong { color: rgba(255,255,255,0.8); display: block; }
+  .green-bar { width: 60px; height: 4px; background: var(--veeam-green); border-radius: 2px; margin: 1em 0; }
+
+  /* Module header */
+  .module-header { display: flex; align-items: center; gap: 0.6em; margin-bottom: 0.4em; }
+  .module-badge { background: var(--veeam-green); color: #000; font-size: 0.55em; font-weight: 700; padding: 0.25em 0.7em; border-radius: 20px; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; }
+
+  /* Grid layouts */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9em; }
+  .two-col-wide { display: grid; grid-template-columns: 1.4fr 1fr; gap: 0.9em; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.7em; }
+  .four-col { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.6em; }
+
+  /* Cards */
+  .card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 0.6em 0.75em; }
+  .card .card-title { color: var(--veeam-green); font-size: 0.62em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3em; }
+  .card p, .card li { font-size: 0.60em; color: rgba(255,255,255,0.8); line-height: 1.4; margin: 0 0 0.2em; }
+  .card ul { margin: 0; padding-left: 1.2em; }
+  .card.accent { border-color: var(--veeam-green); background: rgba(0,179,54,0.08); }
+  .card.warn { border-color: var(--accent-red); background: rgba(255,107,107,0.08); }
+  .card.blue { border-color: var(--accent-blue); background: rgba(88,166,255,0.08); }
+
+  /* Flow diagrams */
+  .flow { display: flex; align-items: center; flex-wrap: wrap; gap: 0.3em; }
+  .flow-box { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.35em 0.7em; font-size: 0.6em; font-weight: 600; color: #fff; white-space: nowrap; }
+  .flow-box.green { border-color: var(--veeam-green); color: var(--veeam-green); background: rgba(0,179,54,0.1); }
+  .flow-box.blue { border-color: var(--accent-blue); color: var(--accent-blue); background: rgba(88,166,255,0.1); }
+  .flow-box.yellow { border-color: var(--accent-yellow); color: var(--accent-yellow); background: rgba(240,180,41,0.1); }
+  .flow-box.red { border-color: var(--accent-red); color: var(--accent-red); background: rgba(255,107,107,0.1); }
+  .flow-arrow { color: rgba(255,255,255,0.4); font-size: 0.7em; }
+
+  /* Tables */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 0.58em; }
+  .data-table th { color: var(--veeam-green); text-align: left; padding: 0.5em 0.8em; border-bottom: 1px solid var(--veeam-green); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  .data-table td { padding: 0.5em 0.8em; border-bottom: 1px solid var(--border-subtle); color: rgba(255,255,255,0.82); vertical-align: top; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--bg-card); }
+  .badge { display: inline-block; border-radius: 4px; padding: 0.1em 0.5em; font-size: 0.9em; font-weight: 600; }
+  .badge-green { background: rgba(0,179,54,0.2); color: var(--veeam-green); }
+  .badge-blue { background: rgba(88,166,255,0.2); color: var(--accent-blue); }
+  .badge-yellow { background: rgba(240,180,41,0.2); color: var(--accent-yellow); }
+  .badge-red { background: rgba(255,107,107,0.2); color: var(--accent-red); }
+
+  /* Bullet lists */
+  .reveal ul.clean { list-style: none; padding: 0; margin: 0; }
+  .reveal ul.clean li { padding: 0.22em 0; font-size: 0.60em; color: rgba(255,255,255,0.82); border-bottom: 1px solid var(--border-subtle); display: flex; align-items: flex-start; gap: 0.5em; }
+  .reveal ul.clean li:last-child { border-bottom: none; }
+  .reveal ul.clean li .bullet { color: var(--veeam-green); font-weight: 700; flex-shrink: 0; }
+  .reveal ul.clean li .bullet-x { color: var(--accent-red); font-weight: 700; flex-shrink: 0; }
+
+  /* Numbered steps */
+  .steps { display: flex; flex-direction: column; gap: 0.3em; }
+  .step { display: flex; align-items: flex-start; gap: 0.5em; }
+  .step-num { background: var(--veeam-green); color: #000; width: 1.5em; height: 1.5em; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.55em; font-weight: 800; flex-shrink: 0; margin-top: 0.05em; }
+  .step-content { font-size: 0.58em; color: rgba(255,255,255,0.82); line-height: 1.388; }
+  .step-content strong { color: #fff; }
+
+  /* Agenda items */
+  .agenda-grid { display: flex; flex-direction: column; gap: 0.35em; }
+  .agenda-item { display: flex; align-items: center; gap: 0.8em; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.55em 0.9em; }
+  .agenda-item .topic { font-size: 0.65em; font-weight: 600; color: #fff; }
+  .agenda-item .desc { font-size: 0.55em; color: rgba(255,255,255,0.5); }
+
+  /* Arch diagram */
+  .arch-box { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.7em 1em; font-size: 0.6em; }
+  .arch-box .arch-title { color: var(--veeam-green); font-weight: 700; font-size: 1.05em; margin-bottom: 0.3em; }
+  .arch-box .arch-port { color: rgba(255,255,255,0.4); font-family: 'JetBrains Mono', monospace; font-size: 0.85em; }
+  .arch-box ul { margin: 0.3em 0 0; padding-left: 1.2em; }
+  .arch-box li { color: rgba(255,255,255,0.75); line-height: 1.6; }
+
+  /* Verdict row */
+  .verdict-row { display: flex; gap: 0.5em; align-items: center; padding: 0.28em 0; border-bottom: 1px solid var(--border-subtle); font-size: 0.58em; }
+  .verdict-row:last-child { border-bottom: none; }
+  .verdict-row .vicon { width: 1.4em; text-align: center; flex-shrink: 0; }
+  .verdict-row .vtext { color: rgba(255,255,255,0.82); flex: 1; }
+
+  /* Prompt box */
+  .prompt-box { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 0.6em 0.9em; font-family: 'JetBrains Mono', monospace; font-size: 0.47em; line-height: 1.5; color: #e6edf3; }
+  .prompt-box .ph { color: #7ee787; }
+  .prompt-box .pa { color: #79c0ff; }
+  .prompt-box .pc { color: #ffa657; }
+  .prompt-label { font-size: 0.55em; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3em; }
+
+  /* Section divider */
+  .section-divider { text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
+  .section-divider .num { font-size: 6em; font-weight: 800; color: rgba(0,179,54,0.15); line-height: 1; font-family: 'Inter', sans-serif; }
+  .section-divider h2 { font-size: 1.8em; margin: 0.1em 0 0.3em; }
+  .section-divider p { color: rgba(255,255,255,0.5); font-size: 0.7em; }
+
+  /* Checklist */
+  .checklist { list-style: none; padding: 0; margin: 0; }
+  .checklist li { display: flex; gap: 0.7em; padding: 0.28em 0; font-size: 0.60em; color: rgba(255,255,255,0.82); border-bottom: 1px solid var(--border-subtle); align-items: center; }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist .ck { color: var(--veeam-green); font-size: 1.1em; }
+
+  /* Speaker notes */
+  .reveal .speaker-notes { font-size: 14px; }
+
+  /* Utility */
+  .text-green { color: var(--veeam-green); }
+  .text-blue { color: var(--accent-blue); }
+  .text-yellow { color: var(--accent-yellow); }
+  .text-red { color: var(--accent-red); }
+  .text-muted { color: rgba(255,255,255,0.5); }
+  .text-sm { font-size: 0.6em; }
+  .mt-sm { margin-top: 0.3em; }
+  .mt-md { margin-top: 0.5em; }
+  .divider { height: 1px; background: var(--border-subtle); margin: 0.8em 0; }
+  .tag { background: rgba(0,179,54,0.15); border: 1px solid var(--veeam-green); color: var(--veeam-green); border-radius: 4px; font-size: 0.55em; padding: 0.1em 0.5em; font-family: 'JetBrains Mono', monospace; }
+  .tag-blue { background: rgba(88,166,255,0.15); border-color: var(--accent-blue); color: var(--accent-blue); }
+  .inline-code { background: rgba(255,255,255,0.1); border-radius: 4px; padding: 0.05em 0.4em; font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: #e6edf3; }
+
+  /* Reveal overrides */
+  .reveal .progress { color: var(--veeam-green); }
+  .reveal .controls { color: var(--veeam-green); }
+  .reveal .slide-number { color: rgba(255,255,255,0.4); font-size: 0.55em; }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 1 — TITLE
+════════════════════════════════════════════════════════════ -->
+<section>
+<div class="title-slide">
+  <div class="eyebrow">Veeam Sales Engineering · Enablement Session</div>
+  <div class="green-bar"></div>
+  <h1>AI Assisted<br><span>Software Development</span></h1>
+  <p style="color:rgba(255,255,255,0.6);font-size:0.85em;margin:0">Daily Account Planner — SDLC, Git Strategy &amp; GitHub Copilot</p>
+</div>
+<aside class="notes">Welcome everyone. Today we're covering how the Daily Account Planner was built, the process we follow to add new features safely, and how GitHub Copilot fits into that workflow. By the end you'll be able to use Copilot to contribute real features to this repo. No deep coding experience required — just curiosity and a GitHub account.</aside>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 2 — AGENDA
+═══════════════════════════════════════════════════════════ -->
+<section>
+<div class="module-header"><span class="module-badge">Agenda</span></div>
+<h2>What We'll Cover Today</h2>
+<div class="agenda-grid">
+  <div class="agenda-item">
+    <div><div class="topic">1 — What We Built &amp; Why Process Matters</div><div class="desc">DAP architecture · SDLC basics · Vibe coding guardrails</div></div>
+  </div>
+  <div class="agenda-item">
+    <div><div class="topic">2 — Git Strategy</div><div class="desc">Branches · DAP naming conventions · Pull Requests</div></div>
+  </div>
+  <div class="agenda-item">
+    <div><div class="topic">3 — Automated Pipeline</div><div class="desc">CI/CD · Sandbox-first deployment · What gets validated</div></div>
+  </div>
+  <div class="agenda-item">
+    <div><div class="topic">4 — GitHub Copilot in Practice</div><div class="desc">Chat · Agent Mode · Prompting well · PR assistance</div></div>
+  </div>
+  <div class="agenda-item">
+    <div><div class="topic">5 — The Full Feature Loop &amp; Live Demo</div><div class="desc">End-to-end workflow · Adding a new agent · Hands-on walkthrough</div></div>
+  </div>
+</div>
+<aside class="notes">Five modules, 90 minutes total. We'll mix explanation with live demos throughout. Most important: Module 1 for WHY process matters, Module 2 for branch naming, and Module 4 for the Copilot demos. Ask questions any time — the goal is for you to leave able to open a PR on this repo.</aside>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 3 — WHAT WE BUILT + THE SAFETY NET
+═══════════════════════════════════════════════════════════ -->
+<section>
+<div class="module-header"><span class="module-badge">Module 1</span><span style="font-size:0.6em;color:rgba(255,255,255,0.5)">Why Process Matters</span></div>
+<h2>What We Built: DAP &amp; the Safety Net</h2>
+<div class="two-col">
+  <div>
+    <div class="card" style="margin-bottom:0.8em">
+      <div class="card-title">🤖 Daily Account Planner (DAP)</div>
+      <div class="flow" style="flex-direction:column;align-items:flex-start;gap:0.5em">
+        <div class="flow" style="gap:0.4em">
+          <div class="flow-box blue">M365 / Teams</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box">M365 Wrapper</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box green">Planner Service</div>
+        </div>
+        <div style="display:flex;gap:0.4em;margin-left:2em">
+          <div class="flow-arrow">↓</div>
+        </div>
+        <div style="display:flex;gap:0.5em;align-items:center">
+          <div class="flow-box yellow">AccountPulse</div>
+          <div class="flow-arrow">|</div>
+          <div class="flow-box yellow">NextMove</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box">Databricks</div>
+        </div>
+      </div>
+            <div style="margin-top:0.5em">
+        <p><strong style="color:var(--veeam-green)">Two containers</strong> in Azure: M365 Wrapper (auth forwarding) + Planner Service (agents + Databricks)</p>
+      </div>
+    </div>
+  </div>
+  <div>
+
+    <div class="card-title" style="font-size:0.62em;color:var(--veeam-green);text-transform:uppercase;letter-spacing:0.08em;font-weight:700;margin-bottom:0.5em">SDLC — The Safety Net</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Plan</strong> — GitHub Issue describes what to build</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><strong style="color:var(--veeam-green)">Build ← AI helps here</strong> — Copilot scaffolds code following project conventions</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><strong style="color:var(--veeam-green)">Test ← AI helps here</strong> — Copilot generates unit tests; CI runs them automatically</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Deploy</strong> — Sandbox first, then production after validation</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><strong>Monitor</strong> — Azure Container Apps logs + health checks</div></div>
+    </div>
+  </div>
+</div>
+<aside class="notes">DAP is two containers in Azure. The M365 Wrapper handles Teams auth and forwards messages. The Planner Service owns all intelligence — it calls AccountPulse or NextMove based on the seller's request, then queries Databricks for real data. The SDLC is the process that wraps around vibe coding to make it reliable. Without it, AI-generated code ships directly to production with no safety net. With it, the AI handles 80% of the writing and the process catches mistakes before they cause problems.</aside>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 4 — VIBE CODING REALITY CHECK
+════════════════════════════════════════════════════════════ -->
+<section>
+<div class="module-header"><span class="module-badge">Module 1</span><span style="font-size:0.6em;color:rgba(255,255,255,0.5)">Why Process Matters</span></div>
+<h2>Vibe Coding — What AI Owns vs. What You Own</h2>
+<div class="two-col">
+  <div class="card accent">
+    <div class="card-title">✅ AI Handles This (the 80%)</div>
+    <ul class="clean" style="margin-top:0.5em">
+      <li><span class="bullet">→</span>Code scaffolding from existing patterns</li>
+      <li><span class="bullet">→</span>Following project conventions (imports, @tool decorators, class structure)</li>
+      <li><span class="bullet">→</span>Generating boilerplate test files</li>
+      <li><span class="bullet">→</span>Writing commit messages and PR descriptions</li>
+      <li><span class="bullet">→</span>Explaining unfamiliar code</li>
+      <li><span class="bullet">→</span>Suggesting fixes for failing tests</li>
+    </ul>
+  </div>
+  <div class="card warn">
+    <div class="card-title">⚠️ You Must Own This (the 20%)</div>
+    <ul class="clean" style="margin-top:0.5em">
+      <li><span class="bullet-x">!</span><span>Business requirements — what the feature <em>should do</em></span></li>
+      <li><span class="bullet-x">!</span>Reviewing generated code for correctness</li>
+      <li><span class="bullet-x">!</span>Security rules — secrets, auth, data access</li>
+      <li><span class="bullet-x">!</span>Environment configuration (sandbox vs. prod)</li>
+      <li><span class="bullet-x">!</span>Final approval before code merges</li>
+      <li><span class="bullet-x">!</span><span>Deciding when <em>not</em> to accept a Copilot suggestion</span></li>
+    </ul>
+  </div>
+</div>
+<div class="card mt-md" style="padding:0.7em 1em">
+  <p style="font-size:0.65em;margin:0">💡 <strong>The mental model:</strong> Copilot is a very fast junior developer who knows the codebase well but doesn't know your business. You're the senior engineer reviewing the pull request.</p>
+</div>
+<aside class="notes">This is the most important mindset shift. Vibe coding works great when you stay in the driver's seat. Copilot will write correct-looking code that is wrong for your business. It doesn't know what AccountPulse should say, or what a JOLT email is, or that your rep IDs are in a specific format. YOU know that. The copilot-instructions.md file is how we encode that business knowledge into the AI's context.</aside>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 5 — GIT BASICS + MENTAL MODEL
+════════════════════════════════════════════════════════════ -->
+<section>
+<div class="module-header"><span class="module-badge">Module 2</span><span style="font-size:0.6em;color:rgba(255,255,255,0.5)">Git Strategy</span></div>
+<h2>Git: Infinite Undo + Team Coordination</h2>
+<div class="two-col-wide">
+  <div>
+    <div class="card" style="margin-bottom:0.4em">
+      <div class="card-title">Why Git Exists</div>
+      <ul class="clean">
+        <li><span class="bullet">→</span><strong>Snapshot history</strong> — every save point is recoverable</li>
+        <li><span class="bullet">→</span><strong>Parallel work</strong> — two people edit different features without colliding</li>
+        <li><span class="bullet">→</span><strong>Safe experimentation</strong> — try something on a branch; delete it if it breaks</li>
+        <li><span class="bullet">→</span><strong>Audit trail</strong> — see exactly what changed, who changed it, when</li>
+      </ul>
+    </div>
+    <div class="card-title" style="font-size:0.62em;color:var(--veeam-green);text-transform:uppercase;letter-spacing:0.08em;font-weight:700;margin:0.5em 0 0.4em">The DAP Branch Model</div>
+    <div style="display:flex;flex-direction:column;gap:0.4em">
+      <div class="flow" style="gap:0.3em;align-items:center">
+        <div class="flow-box green" style="font-size:0.7em">feature/my-feature</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box" style="font-size:0.7em">dev</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box yellow" style="font-size:0.7em">integration</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box blue" style="font-size:0.7em">main</div>
+      </div>
+      <div style="display:flex;gap:0.3em;font-size:0.55em;color:rgba(255,255,255,0.4);padding:0 0.1em">
+        <span style="flex:1.3;padding-left:0.8em">your work</span>
+        <span style="flex:0.9;padding-left:0.4em">shared dev</span>
+        <span style="flex:1;padding-left:0.6em">sandbox</span>
+        <span style="flex:0.8;padding-left:0.5em">production</span>
+      </div>
+      <div style="display:flex;gap:0.3em;font-size:0.5em;color:rgba(255,255,255,0.3);padding:0 0.1em">
+        <div style="flex:1.3;padding-left:0.8em">↑ lowest risk</div>
+        <div style="flex:2.8;text-align:right;padding-right:0.3em">highest confidence ↑</div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="card-title">Branch Naming for DAP</div>
+      <div style="background:#161b22;border-radius:6px;padding:0.4em 0.6em;font-family:'JetBrains Mono',monospace;font-size:0.56em;margin-bottom:0.35em">
+        <div style="color:#7ee787">feature/</div>
+        <div style="color:#e6edf3;padding-left:1em">&lt;topic&gt;-&lt;short-description&gt;</div>
+      </div>
+      <ul class="clean">
+        <li><span class="bullet">✓</span><span class="inline-code">feature/add-competitor-intel-agent</span></li>
+        <li><span class="bullet">✓</span><span class="inline-code">feature/fix-next-move-ranking</span></li>
+        <li><span class="bullet">✓</span><span class="inline-code">feature/improve-email-draft-prompt</span></li>
+        <li><span class="bullet-x">✗</span><span style="color:var(--accent-red);font-family:'JetBrains Mono',monospace;font-size:0.9em">my-changes</span></li>
+        <li><span class="bullet-x">✗</span><span style="color:var(--accent-red);font-family:'JetBrains Mono',monospace;font-size:0.9em">test123</span></li>
+      </ul>
+      <p style="margin-top:0.5em">Lowercase · hyphens · under 50 chars</p>
+    </div>
+  </div>
+</div>
+<aside class="notes">Think of branches like parallel universes. You do your work in your own universe (feature branch), and only merge it into the shared universe (dev) when it's ready. The confidence level increases as code moves right. You'd never push directly to main — that's guarded by approvals and automated tests.</aside>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 6 — DAP BRANCH STRATEGY TABLE
+════════════════════════════════════════════════════════════ -->
+<section>
+<div class="module-header"><span class="module-badge">Module 2</span><span style="font-size:0.6em;color:rgba(255,255,255,0.5)">Git Strategy</span></div>
+<h2>DAP Branch Strategy</h2>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Branch</th>
+      <th>Purpose</th>
+      <th>Who Touches It</th>
+      <th>Protection Rules</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tag">feature/*</span></td>
+      <td>Individual feature development</td>
+      <td>Any team member</td>
+      <td>None — experiment freely</td>
+    </tr>
+    <tr>
+      <td><span class="tag">dev</span></td>
+      <td>Shared engineering integration — all features land here first</td>
+      <td>Dev team lead</td>
+      <td>PR + CI must pass · at least 1 reviewer</td>
+    </tr>
+    <tr>
+      <td><span class="tag tag-blue">integration</span></td>
+      <td>Non-prod sandbox deployment — auto-deploys to Azure</td>
+      <td>Dev/infra coordination</td>
+      <td>PR + CI must pass · optional infra reviewer gate</td>
+    </tr>
+    <tr>
+      <td><span class="tag tag-blue">main</span></td>
+      <td>Production — only approved, tested releases</td>
+      <td>Infra team approves</td>
+      <td>PR from <span class="inline-code">integration</span> only · required infra reviewers · no self-review</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="card mt-md" style="padding:0.7em 1em">
+  <div style="display:flex;gap:2em;flex-wrap:wrap">
+    <div>
+      <div class="card-title" style="margin-bottom:0.3em">Separate Tracks (don't touch routine delivery)</div>
+      <div style="display:flex;gap:0.5em;flex-wrap:wrap">
+        <span class="badge badge-yellow">bootstrap-foundation</span>
+        <span style="font-size:0.6em;color:rgba(255,255,255,0.5);align-self:center">new Azure resources, VNet, one-time infra</span>
+      </div>
+      <div style="display:flex;gap:0.5em;flex-wrap:wrap;margin-top:0.3em">
+        <span class="badge badge-yellow">teams-catalog-admin</span>
+        <span style="font-size:0.6em;color:rgba(255,255,255,0.5);align-self:center">M365 app package publish (admin approval required)</span>
+      </div>
+    </div>
+  </div>
+</div>
+<aside class="notes">The key mental model: feature/* is your playground, dev is the team's integration point, integration is the sandbox mirror of production, and main IS production. Never skip levels. If your feature branch merges directly to main, nobody had a chance to catch mistakes and the pipeline didn't validate it in sandbox first.</aside>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 7 — PULL REQUESTS
+════════════════════════════════════════════════════════════ -->
+<section>
+<div class="module-header"><span class="module-badge">Module 2</span><span style="font-size:0.6em;color:rgba(255,255,255,0.5)">Git Strategy</span></div>
+<h2>Pull Requests: The Review Gate</h2>
+<div class="two-col">
+  <div>
+    <div class="card-title" style="font-size:0.62em;color:var(--veeam-green);text-transform:uppercase;letter-spacing:0.08em;font-weight:700;margin-bottom:0.7em">PR Lifecycle</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Create PR</strong> — push your branch, open PR to <span class="inline-code">dev</span>. Copilot auto-generates the description.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><strong>CI runs automatically</strong> — tests, Docker build, shell validation. No human needed for this step.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Copilot reviews</strong> — inline comments on patterns, potential bugs, convention violations.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Human reviewer approves</strong> — checks business logic, approves the merge.</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><strong>Merge</strong> — code lands in <span class="inline-code">dev</span>. Feature branch can be deleted.</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="card accent" style="margin-bottom:0.8em">
+      <div class="card-title">PRs are conversations, not just approvals</div>
+      <p>A PR is where the team discusses the change before it affects anyone. Comments are questions, suggestions, or concerns — not personal criticism.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">What Copilot writes for you</div>
+      <ul class="clean">
+        <li><span class="bullet">→</span>PR title and description from the diff</li>
+        <li><span class="bullet">→</span>Summary of files changed and why</li>
+        <li><span class="bullet">→</span>Inline suggestions on code quality</li>
+        <li><span class="bullet">→</span>Commit messages for each save point</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<aside class="notes">PRs are how code gets reviewed before it's shared. You can't break anything by opening a PR — it's just a proposal. The CI checks run automatically, so you get fast feedback. Copilot's review is especially useful for catching things like "you forgot to register this agent in HandoffBuilder" or "this env var read belongs in config.py".</aside>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 8 — GITHUB ACTIONS + THE 4 WORKFLOWS
+════════════════════════════════════════════════════════════ -->
+<section>
+<div class="module-header"><span class="module-badge">Module 3</span><span style="font-size:0.6em;color:rgba(255,255,255,0.5)">Automated Pipeline</span></div>
+<h2>GitHub Actions: Your Robot QA Team</h2>
+<div class="two-col">
+  <div>
+    <div class="card-title" style="font-size:0.62em;color:var(--veeam-green);text-transform:uppercase;letter-spacing:0.08em;font-weight:700;margin-bottom:0.5em">What CI checks on every PR</div>
+    <ul class="checklist">
+      <li><span class="ck">✓</span>Python unit tests (<span class="inline-code">pytest mvp/agents/tests/</span>)</li>
+      <li><span class="ck">✓</span>Wrapper tests (<span class="inline-code">pytest mvp/m365_wrapper/tests/</span>)</li>
+      <li><span class="ck">✓</span>Docker build smoke — both containers build successfully</li>
+      <li><span class="ck">✓</span>Shell script validation — infra scripts have no bash errors</li>
+      <li><span class="ck">✓</span>M365 app package build</li>
+    </ul>
+    <div class="card mt-md" style="padding:0.6em 1em">
+      <p style="font-size:0.62em;margin:0">🤖 All of this runs <strong>automatically</strong> — no human presses any button. Red = something is broken. Green = safe to review and merge.</p>
+    </div>
+  </div>
+  <div>
+    <div class="card-title" style="font-size:0.62em;color:var(--veeam-green);text-transform:uppercase;letter-spacing:0.08em;font-weight:700;margin-bottom:0.5em">The 4 Workflows</div>
+    <table class="data-table" style="font-size:0.56em">
+      <thead><tr><th>Workflow</th><th>When</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="inline-code">ci.yml</span></td>
+          <td>Every PR / push</td>
+          <td>Tests, builds, validates</td>
+        </tr>
+        <tr>
+          <td><span class="inline-code">deploy-integration.yml</span></td>
+          <td>Push to <span class="inline-code">integration</span></td>
+          <td>Deploy to sandbox, run smoke tests</td>
+        </tr>
+        <tr>
+          <td><span class="inline-code">deploy-production.yml</span></td>
+          <td>Push to <span class="inline-code">main</span></td>
+          <td>Promote tested image to prod</td>
+        </tr>
+        <tr>
+          <td><span class="inline-code">publish-teams-catalog.yml</span></td>
+          <td>Manual (M365 admin)</td>
+          <td>Update Teams app package</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="card blue mt-md" style="padding:0.5em 0.8em">
+      <p style="font-size:0.6em;margin:0">🔐 Authentication uses <strong>Azure OIDC</strong> — no stored passwords or API keys in GitHub. Separate identities for integration vs. production.</p>
+    </div>
+  </div>
+</div>
+<aside class="notes">GitHub Actions is the automation layer. Every time code is pushed, these workflows fire. The CI workflow is the gatekeeper — if tests fail, the PR is blocked. Nobody has to remember to run tests manually. The OIDC auth model is worth highlighting: no secrets stored in GitHub for Azure access. Instead, GitHub's identity is federated with Azure Entra so it can authenticate dynamically.</aside>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 9 — INSIDE THE WORKFLOWS
+════════════════════════════════════════════════════════════ -->
+<section>
+<div class="module-header"><span class="module-badge">Module 3</span><span style="font-size:0.6em;color:rgba(255,255,255,0.5)">Automated Pipeline</span></div>
+<h2>What Runs &amp; When</h2>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.9em;margin-top:0.8em">
+
+  <div class="card" style="border-color:rgba(88,166,255,0.35)">
+    <div class="card-title" style="color:var(--accent-blue)">On every PR</div>
+    <ul class="clean" style="font-size:0.65em;margin-top:0.4em">
+      <li style="margin-bottom:0.3em">✓ Unit tests <span style="color:rgba(255,255,255,0.4)">(agents · wrapper · infra)</span></li>
+      <li style="margin-bottom:0.3em">✓ Docker build smoke <span style="color:rgba(255,255,255,0.4)">(local, no push)</span></li>
+      <li>✓ Shell script syntax check</li>
+    </ul>
+  </div>
+
+  <div class="card" style="border-color:rgba(240,180,41,0.4)">
+    <div class="card-title" style="color:var(--accent-yellow)">On merge → integration</div>
+    <ul class="clean" style="font-size:0.65em;margin-top:0.4em">
+      <li style="margin-bottom:0.3em">✓ Build &amp; push both images to ACR</li>
+      <li style="margin-bottom:0.3em">✓ Deploy to Container Apps <span style="color:rgba(255,255,255,0.4)">(sandbox)</span></li>
+      <li>✓ Smoke tests <span style="color:rgba(255,255,255,0.4)">(health · auth · chat)</span></li>
+    </ul>
+  </div>
+
+  <div class="card" style="border-color:rgba(63,185,80,0.35)">
+    <div class="card-title" style="color:var(--veeam-green)">On merge → main</div>
+    <ul class="clean" style="font-size:0.65em;margin-top:0.4em">
+      <li style="margin-bottom:0.3em">✓ Human approval required</li>
+      <li>✓ Same ACR image promoted to prod <span style="color:rgba(255,255,255,0.4)">(no rebuild)</span></li>
+    </ul>
+  </div>
+
+</div>
+
+<aside class="notes">Three columns, three moments in the lifecycle. PRs get fast feedback — tests and a local Docker build. Nothing touches Azure until the integration branch merge, where images are built in ACR, deployed to sandbox, and smoke-tested. Production is just a promotion of what already passed — no new build, no surprises.</aside>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 10 — BUILDING NEW AGENTS WITH COPILOT
+════════════════════════════════════════════════════════════ -->
+<section>
+<div class="module-header"><span class="module-badge">Module 4</span><span style="font-size:0.6em;color:rgba(255,255,255,0.5)">GitHub Copilot</span></div>
+<h2>Building a New Agent with Copilot</h2>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1em;margin-top:0.8em">
+
+  <div class="card" style="border-color:rgba(88,166,255,0.35)">
+    <div class="card-title" style="color:var(--accent-blue)">💬 Ask</div>
+    <p style="font-size:0.65em;margin-top:0.3em">Start by asking Copilot to understand the codebase before writing anything.</p>
+    <ul class="clean" style="font-size:0.62em;margin-top:0.5em;color:rgba(255,255,255,0.75)">
+      <li style="margin-bottom:0.3em">"How does <span class="inline-code">account_pulse.py</span> register its tools?"</li>
+      <li style="margin-bottom:0.3em">"What pattern does the planner use to call specialist agents?"</li>
+      <li>"Which files would I touch to add a new agent?"</li>
+    </ul>
+    <p style="font-size:0.58em;margin-top:0.6em;color:rgba(255,255,255,0.4)">Use <span class="inline-code">@workspace</span> to search the whole repo or <span class="inline-code">#file</span> to pin a specific file.</p>
+  </div>
+
+  <div class="card" style="border-color:rgba(240,180,41,0.4)">
+    <div class="card-title" style="color:var(--accent-yellow)">📋 Plan</div>
+    <p style="font-size:0.65em;margin-top:0.3em">Ask Copilot to produce a plan before generating any code.</p>
+    <ul class="clean" style="font-size:0.62em;margin-top:0.5em;color:rgba(255,255,255,0.75)">
+      <li style="margin-bottom:0.3em">"Give me a step-by-step plan to add a <em>Renewal Risk</em> agent following the same structure as AccountPulse."</li>
+      <li>"What Databricks queries will I need and where should they live?"</li>
+    </ul>
+    <p style="font-size:0.58em;margin-top:0.6em;color:rgba(255,255,255,0.4)">Review the plan, correct it, then proceed — cheaper to fix intent than code.</p>
+  </div>
+
+  <div class="card accent" style="border-color:rgba(63,185,80,0.4)">
+    <div class="card-title" style="color:var(--veeam-green)">🤖 Agent Mode</div>
+    <p style="font-size:0.65em;margin-top:0.3em">Hand the approved plan to Agent Mode and let it execute across the repo.</p>
+    <ul class="clean" style="font-size:0.62em;margin-top:0.5em;color:rgba(255,255,255,0.75)">
+      <li style="margin-bottom:0.3em">Creates the new agent file with correct <span class="inline-code">@tool</span> decorators</li>
+      <li style="margin-bottom:0.3em">Registers it in <span class="inline-code">planner.py</span> and <span class="inline-code">__init__.py</span></li>
+      <li>Adds unit tests following the existing test patterns</li>
+    </ul>
+    <p style="font-size:0.58em;margin-top:0.6em;color:rgba(255,255,255,0.4)">Agent Mode reads context, edits multiple files, and checks its own work.</p>
+  </div>
+
+</div>
+
+<aside class="notes">This is the practical workflow the team should use. Don't jump straight to Agent Mode — start by asking questions so Copilot understands the conventions. Then get a written plan you can review. Only then let Agent Mode loose across multiple files. The Ask → Plan → Agent flow means Copilot follows your existing patterns rather than inventing its own. The codebase is the spec.</aside>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 12 — COPILOT CHAT: YOUR DAP EXPERT
+════════════════════════════════════════════════════════════ -->
+<section>
+<div class="module-header"><span class="module-badge">Module 4</span><span style="font-size:0.6em;color:rgba(255,255,255,0.5)">GitHub Copilot</span></div>
+<h2>Copilot Chat: Your DAP Expert</h2>
+<div class="two-col">
+  <div>
+    <div class="card-title" style="font-size:0.62em;color:var(--veeam-green);text-transform:uppercase;letter-spacing:0.08em;font-weight:700;margin-bottom:0.4em">Example Questions to Ask</div>
+    <ul class="checklist">
+      <li><span class="ck">?</span>"What does AccountPulse do and what data sources does it use?"</li>
+      <li><span class="ck">?</span>"Which files do I need to modify to add a new specialist agent?"</li>
+      <li><span class="ck">?</span>"What is the OBO token flow? Explain it simply."</li>
+      <li><span class="ck">?</span>"Why does the session store limit the planner to 1 replica?"</li>
+      <li><span class="ck">?</span>"What tests exist for the planner API?"</li>
+    </ul>
+    <div class="card mt-md" style="padding:0.6em 0.8em">
+      <div class="card-title">Usage Modes</div>
+      <p><span class="inline-code">#file:account_pulse.py</span> — attach a specific file for context</p>
+      <p><span class="inline-code">@workspace</span> — search across the whole repo</p>
+      <p><span class="inline-code">/explain</span> — highlight code in editor, ask Copilot to explain it</p>
+    </div>
+  </div>
+  <div>
+    <div class="card accent">
+      <div class="card-title">🧠 Inline Completion Example</div>
+      <div class="prompt-box" style="font-size:0.6em;margin-top:0.4em">
+<span style="color:#6e7681"># Returns top opportunities for this seller</span>
+<span style="color:#f97583">@tool</span>
+<span style="color:#79c0ff">async def</span> <span style="color:#e6edf3">get_top_opportunities</span>(
+    <span style="color:#e6edf3">limit: </span><span style="color:#ffa657">Annotated</span>[<span style="color:#79c0ff">int</span>, <span style="color:#e6edf3">Field(</span>
+        <span style="color:#e6edf3">description=</span><span style="color:#a5d6ff">"Max results"</span>
+    <span style="color:#e6edf3">)]</span> = <span style="color:#79c0ff">10</span>,
+<span style="color:#e6edf3">) -> </span><span style="color:#79c0ff">str</span>:
+    <span style="color:#6e7681 font-style:italic"># ← Copilot writes the rest</span>
+      </div>
+      <p style="margin-top:0.5em">Write the signature and docstring comment → Copilot fills in the implementation following existing patterns in the file.</p>
+    </div>
+  </div>
+</div>
+<aside class="notes">DEMO MOMENT: Open Copilot Chat. Attach #file:mvp/agents/account_pulse.py. Ask "What does AccountPulse do and what data sources does it use?" Show the response. Then ask "Which files do I modify to add a new specialist agent?" — watch it reference copilot-instructions.md and give the 3-step answer. Key message: Copilot is reading the actual code, not making things up.</aside>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 13 — AGENT MODE
+════════════════════════════════════════════════════════════ -->
+<section>
+<div class="module-header"><span class="module-badge">Module 4</span><span style="font-size:0.6em;color:rgba(255,255,255,0.5)">GitHub Copilot</span></div>
+<h2>Agent Mode: Multi-File Changes</h2>
+<div class="two-col">
+  <div>
+    <div class="card" style="margin-bottom:0.8em">
+      <div class="card-title">Chat vs Agent Mode</div>
+      <div class="verdict-row"><div class="vicon">💬</div><div class="vtext"><strong>Chat</strong> — Question &amp; Answer. Explains, suggests, shows code snippets. <em>You</em> copy and paste.</div></div>
+      <div class="verdict-row"><div class="vicon">🤖</div><div class="vtext"><strong>Agent Mode</strong> — Plans and executes. Reads multiple files, creates new files, edits existing ones. <em>You</em> review and accept/reject.</div></div>
+    </div>
+    <div class="card accent">
+      <div class="card-title">When to use Agent Mode for DAP</div>
+      <ul class="clean">
+        <li><span class="bullet">→</span>Creating a new specialist agent end-to-end</li>
+        <li><span class="bullet">→</span>Adding a new Databricks-backed tool + tests</li>
+        <li><span class="bullet">→</span>Refactoring a module to follow updated conventions</li>
+        <li><span class="bullet">→</span>Generating a test file for existing code</li>
+      </ul>
+    </div>
+  </div>
+  <div>
+    <div class="card-title" style="font-size:0.62em;color:var(--veeam-green);text-transform:uppercase;letter-spacing:0.08em;font-weight:700;margin-bottom:0.4em">Example Agent Mode Prompt</div>
+    <div class="prompt-box">
+Using the existing patterns in
+<span class="pa">account_pulse.py</span> and <span class="pa">next_move.py</span>,
+create a new specialist agent called
+<span class="ph">CompetitorIntel</span> that returns a list
+of competitor mentions for the seller's
+top accounts.
+
+Follow ALL conventions in
+<span class="pa">.github/copilot-instructions.md</span>:
+- try/except import pattern
+- @tool pattern for data access
+- no SQL in the agent
+- register in planner.py HandoffBuilder
+- add unit tests in agents/tests/
+    </div>
+    <div style="margin-top:0.6em;font-size:0.58em;color:rgba(255,255,255,0.5)">
+      Agent will: read 5+ files → create <span class="inline-code">competitor_intel.py</span> → update <span class="inline-code">planner.py</span> → create test file
+    </div>
+  </div>
+</div>
+<aside class="notes">DEMO MOMENT: Switch to Agent Mode. Paste the example prompt. Let it run. Walk through what it reads and creates. Highlight: (1) it follows the try/except import pattern automatically, (2) it registers in HandoffBuilder without being told explicitly because copilot-instructions.md says to, (3) it creates a test file. Then point at one thing to review — maybe the agent instructions string needs real business content that only you know.</aside>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 14 — PROMPTING WELL
+════════════════════════════════════════════════════════════ -->
+<section>
+<div class="module-header"><span class="module-badge">Module 4</span><span style="font-size:0.6em;color:rgba(255,255,255,0.5)">GitHub Copilot</span></div>
+<h2>Prompting Well — The 3-Part Formula</h2>
+<div class="three-col">
+  <div class="card accent">
+    <div class="card-title">1. Context</div>
+    <p>Tell Copilot WHAT it's working with. Reference specific files, the instructions doc, the existing pattern to follow.</p>
+    <div class="prompt-box" style="margin-top:0.4em;font-size:0.50em">
+<span class="ph">"Given account_pulse.py and
+copilot-instructions.md..."</span>
+    </div>
+  </div>
+  <div class="card blue">
+    <div class="card-title">2. Action</div>
+    <p>Tell Copilot WHAT to create or change. Be specific — vague requests get vague outputs.</p>
+    <div class="prompt-box" style="margin-top:0.4em;font-size:0.50em">
+<span class="pa">"...create a CompetitorIntel
+agent that returns competitor
+mentions for accounts..."</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">3. Constraints</div>
+    <p>Tell Copilot what NOT to do or what rules to follow. This is where DAP-specific guardrails go.</p>
+    <div class="prompt-box" style="margin-top:0.4em;font-size:0.50em">
+<span class="pc">"...no SQL in the agent,
+register in HandoffBuilder,
+follow all conventions in
+copilot-instructions.md"</span>
+    </div>
+  </div>
+</div>
+<div class="card mt-md" style="padding:0.4em 0.7em">
+  <div style="display:flex;align-items:flex-start;gap:0.6em">
+    <div style="font-size:1.0em;flex-shrink:0">📄</div>
+    <p style="font-size:0.63em;margin:0"><strong><span class="inline-code">.github/copilot-instructions.md</span> is your team's AI contract.</strong> It encodes every architectural rule, naming convention, and security guardrail into the context Copilot reads for every request in this repo. The more detailed and accurate it is, the better Copilot follows your patterns — automatically, without you repeating the rules every time.</p>
+  </div>
+</div>
+<aside class="notes">The 3-part structure applies whether you're using Chat or Agent Mode. Bad prompt: "add a new agent". Good prompt: Context (which files to use as pattern) + Action (what the agent should do specifically) + Constraints (which rules to follow — and always reference copilot-instructions.md explicitly). The instructions file is the single most powerful lever the team has. If a Copilot output is wrong, the fix is usually to improve the instructions file, not to retry the prompt.</aside>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 15 — PR ASSISTANCE + GUARDRAILS
+════════════════════════════════════════════════════════════ -->
+<section>
+<div class="module-header"><span class="module-badge">Module 4</span><span style="font-size:0.6em;color:rgba(255,255,255,0.5)">GitHub Copilot</span></div>
+<h2>Copilot for PRs + DAP Guardrails</h2>
+<div class="two-col">
+  <div>
+    <div class="card-title" style="font-size:0.62em;color:var(--veeam-green);text-transform:uppercase;letter-spacing:0.08em;font-weight:700;margin-bottom:0.4em">PR Assistance Features</div>
+    <div class="card" style="margin-bottom:0.6em">
+      <div class="card-title">Auto-Generate PR Description</div>
+      <p>Click the Copilot sparkle on the PR description field → Copilot reads the diff and writes: what changed, which files were added/modified, why (inferred from code).</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Inline Code Review</div>
+      <p>Copilot reviews your PR and leaves line-specific comments. Catches: missed function registration, missing tests, pattern deviations, potential bugs.</p>
+    </div>
+  </div>
+  <div>
+    <div class="card-title" style="font-size:0.62em;color:var(--veeam-green);text-transform:uppercase;letter-spacing:0.08em;font-weight:700;margin-bottom:0.4em">Top 5 DAP Guardrails for Copilot</div>
+    <ul class="clean">
+      <li>
+        <span class="bullet-x">✗</span>
+        <span><strong style="color:var(--accent-red)">No SQL in agents</strong> — if an agent needs data, it calls a <span class="inline-code">@tool</span> function. SQL never appears in prompts or agent instructions.</span>
+      </li>
+      <li>
+        <span class="bullet-x">✗</span>
+        <span><strong style="color:var(--accent-red)">No Databricks from the M365 Wrapper</strong> — the wrapper is stateless and forwards only. All Databricks access lives in <span class="inline-code">mvp/agents/</span>.</span>
+      </li>
+      <li>
+        <span class="bullet-x">✗</span>
+        <span><strong style="color:var(--accent-red)">No raw <span class="inline-code">os.environ.get()</span> in business logic</strong> — all env var reads go through <span class="inline-code">config.py</span> with <span class="inline-code">@lru_cache</span>.</span>
+      </li>
+      <li>
+        <span class="bullet-x">✗</span>
+        <span><strong style="color:var(--accent-red)">New agents must register in HandoffBuilder</strong> — creating <span class="inline-code">my_agent.py</span> alone is not enough. Register in <span class="inline-code">planner.py</span> or it's never called.</span>
+      </li>
+      <li>
+        <span class="bullet-x">✗</span>
+        <span><strong style="color:var(--accent-red)">Never scale planner past 1 replica</strong> — the in-memory session store is not distributed. ACA_MAX_REPLICAS must stay at 1.</span>
+      </li>
+    </ul>
+  </div>
+</div>
+<aside class="notes">DEMO MOMENT: After pushing the feature branch from the Agent Mode demo, go to GitHub, create the PR. Show the Copilot sparkle button on the description field. Click it and watch the auto-generated description appear. If time permits, show a Copilot code review comment. The guardrails slide is the most important safety content — these are the rules that Copilot might accidentally break if the prompt isn't explicit enough. They're all in copilot-instructions.md for this reason.</aside>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 16 — END-TO-END FEATURE LOOP
+════════════════════════════════════════════════════════════ -->
+<section>
+<div class="module-header"><span class="module-badge">Module 5</span><span style="font-size:0.6em;color:rgba(255,255,255,0.5)">The Full Feature Loop</span></div>
+<h2>End-to-End: From Idea to Production</h2>
+<div class="two-col">
+  <div class="steps">
+    <div class="step">
+      <div class="step-num" style="background:var(--accent-blue);color:#000">1</div>
+      <div class="step-content"><strong>GitHub Issue</strong> — Write what you want to build. Be specific about business behavior, not implementation. Copilot can help draft the issue.</div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:var(--accent-blue);color:#000">2</div>
+      <div class="step-content"><strong>Create feature branch</strong> — <span class="inline-code">git checkout -b feature/my-feature</span> from <span class="inline-code">dev</span>. Never from <span class="inline-code">main</span>.</div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:var(--veeam-green);color:#000">3</div>
+      <div class="step-content"><strong>Agent Mode implementation</strong> — Use the 3-part prompt. Reference existing patterns and copilot-instructions.md. Review every file Copilot creates.</div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:var(--veeam-green);color:#000">4</div>
+      <div class="step-content"><strong>Run tests locally</strong> — <span class="inline-code">uv run pytest mvp/agents/tests/</span>. Fix failures before pushing. Copilot helps fix failing tests.</div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:var(--veeam-green);color:#000">5</div>
+      <div class="step-content"><strong>Commit with Copilot message</strong> — Click the sparkle in VS Code Source Control. Review and accept the generated commit message.</div>
+    </div>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num" style="background:var(--veeam-green);color:#000">6</div>
+      <div class="step-content"><strong>Push + open PR</strong> — <span class="inline-code">git push origin feature/my-feature</span>. Open PR to <span class="inline-code">dev</span>. Use Copilot to generate description.</div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:var(--accent-yellow);color:#000">7</div>
+      <div class="step-content"><strong>CI runs automatically</strong> — Watch the checks tab. Red = fix before merge. Green = ready for review.</div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:var(--accent-yellow);color:#000">8</div>
+      <div class="step-content"><strong>Copilot + human review</strong> — Copilot leaves inline comments. Reviewer approves. Address any feedback on the same branch.</div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:var(--accent-yellow);color:#000">9</div>
+      <div class="step-content"><strong>Merge → dev → integration</strong> — Sandbox auto-deploys. Smoke tests validate the full runtime.</div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:var(--accent-blue);color:#000">10</div>
+      <div class="step-content"><strong>Infra approves → main → production</strong> — Same tested image promotes. Feature is live for sellers.</div>
+    </div>
+  </div>
+</div>
+<aside class="notes">DEMO MOMENT: Walk through steps 2-8 live. Create the branch from the Agent Mode output, stage the files, use Copilot commit message, push, open PR to dev. Show the CI checks starting to run. Show the Copilot PR description. This is the full loop in one take. Keep it tight — 8 minutes max.</aside>
+</section>
+
+
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/notes/notes.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/highlight/highlight.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  slideNumber: 'c/t',
+  progress: true,
+  controls: true,
+  center: false,
+  transition: 'fade',
+  transitionSpeed: 'fast',
+  backgroundTransition: 'fade',
+  width: 1280,
+  height: 720,
+  margin: 0.06,
+  plugins: [ RevealNotes, RevealHighlight ],
+  highlight: {
+    highlightOnLoad: true,
+  }
+});
+</script>
+</body>
+</html>
